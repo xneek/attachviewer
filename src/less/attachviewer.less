@@ -1,1 +1,69 @@
 /*attachviewer*/
+.attachviewer {
+display:none;
+&.active {display:flex;}
+		  align-items: center;
+  justify-content: center;
+top:0;left:0;
+z-index:100500;
+	position:fixed;
+	width:100%;
+	min-height:100%;
+	background:rgba(0,0,0,0.67);
+	text-align:center;
+	.attachviewer-item {
+		display:none;
+		&.active {display:flex; }
+		  align-items: center;
+  justify-content: center;
+		iframe, img {
+			margin:auto auto;
+			height:80%;
+			align-self:center;
+			z-index:9999;
+		}
+	}
+	.attachviewer-toolbar { color:#fff;
+	z-index:3;
+	
+	position:fixed;top:0;left:0; width:100%; 
+	padding:16px;
+	line-height:24px;
+	text-align:left;
+		background:rgba(0,0,0,0.67);
+		
+		.attachviewer-subtoolbar {
+		float:right;
+		margin-right:8px;
+		color:#fff;
+		 a {color:#fff}
+		}
+		
+		.attachviewer-close {
+
+				background:transparent; border:0; margin:0; padding:0;
+			display:block;
+		height:24px; width:24px; line-height:24px; text-align:center;
+			float:right;
+			font-size:24px;
+			margin-right:32px;
+			border-radius:24px;
+			color:#fff;
+		}
+	}
+	
+	
+	
+	.attachviewer-prev,.attachviewer-next {
+				background:transparent; border:0; margin:0; padding:0;
+			display:block;
+			color:#fff; padding:12px; font-size:30px;
+			position:fixed; top:48%;
+			opacity:.5;
+			&:hover { opacity:1}
+			
+	}
+	.attachviewer-prev {left:0}
+	.attachviewer-next {right:0}
+	
+}

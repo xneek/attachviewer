@@ -2,60 +2,24 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>fnn-autocomplete</title>
-	<link rel="stylesheet" href="../dist/fnn-autocomplete.css">
-	<link rel="stylesheet" href="../dist/fnn-autocomplete-material.css">
+	<title>attachviewer</title>
+	<link rel="stylesheet" href="../dist/attachviewer.css">
+	<link rel="stylesheet" href="../dist/attachviewer-material.css">
 </head>
 <body>
-	<div style="padding:20px; width:400px;">
-		<input id="my_input" placeholder="Type programming language">
+	<div style="padding:20px; width:400px;"id="attchs">
+		<a href="attach/GJ1TgfVH0cg.jpg">Flower</a><br>
+		<a href="https://okartinkah.ru/img/krasivye-kartinki-dlya-rabochego-stola-1946/krasivye-kartinki-dlya-rabochego-stola-7.jpg">Nature</a><br>
+		<a href="http://my-pm.ru/files/storage/mail_attachments/353c2c3a5ae95d8efcb08ff3eee5a727d.xlsx">Table</a><br>
+		<a href="attach/qlHITtgYj8чяY.jpg">hackday</a><br>
+		<a href="attach/U_YYwKqwEZ8.jpg">ava hackday</a><br>
+		<a href="attach/О хакатоне.docx">Document</a><br>
 	</div>
 	<script src="../bower_components/crEl/crEl.js"></script>
-	<script src="../dist/fnn-autocomplete.js"></script>
+	<script src="../dist/attachviewer.js"></script>
 	<script>
-		var $ = { // Sorry jQuery, it`s your emulator)))
-			getJSON: function(url, data, cb){
-				var d = [
-					{id:1, name:'JavaScript'},
-					{id:2, name:'Java'},
-					{id:3, name:'Go'},
-					{id:4, name:'C++'},
-					{id:5, name:'Delphi'},
-					{id:6, name:'C'},
-					{id:7, name: 'C#'},
-					{id:8, name: 'Python'},
-					{id:9, name:'Rubby'},
-					{id:10, name:'Pascal'}
-				];
-				
-				setTimeout(function(){ // emulate XHR duration 
-				  cb(d)
-				},1000)
-			}
-		}
-		var inp = document.getElementById("my_input");
-		var aCompl = new fnnAutocomplete(inp,{
-			loader:true,
-			data:[],
-			//data:['Java','Go','C++','Delphi','C', 'C#', 'Python','Rubby','Pascal'],
-			render: function(data){
-				return crEl('li',
-					crEl('strong',data.name), ' \u00a0 ',
-					crEl('small', 'id ' + data.id.toString() )
-				)
-			}, 
-			key:'name',
-			source: function(term, cb){
-				$.getJSON('i_am_url.php',{q:term},function(res){
-					cb(res)
-				}) 
-			}, noFound: function(name){
-				return crEl('li',{e:{click:function(){
-					alert(name)
-					}}},'::'+name)
-			}
-			});
-			console.log(aCompl);
+		var av = new AttachViewer(document.querySelectorAll('#attchs a'));
+		console.log(av)
 			
 	</script>
 </body>
