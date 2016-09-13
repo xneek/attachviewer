@@ -89,7 +89,7 @@ var AttachViewer = function () {
 						th.close();
 					} } }, '×'), crEl('div', { c: 'attachviewer-subtoolbar' }, crEl('a', { target: '_blank', href: item.href, e: { click: function click() {
 						th.close();
-					} } }, '⇓')), item.innerHTML));
+					} } }, '⇓')), item.dataset.name || item.innerHTML));
 		}
 
 		this.container = crEl('div', { c: 'attachviewer' });
@@ -133,7 +133,7 @@ var AttachViewer = function () {
 			}
 		});
 		this.container.focus();
-		return elements;
+		return this;
 	}
 
 	return AttachViewer;
