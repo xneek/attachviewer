@@ -1,0 +1,101 @@
+/*attachviewer*/
+.attachviewer {
+  display: none;
+  -ms-flex-align: center;
+      -ms-grid-row-align: center;
+      align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+  top: 0;
+  left: 0;
+  z-index: 100500;
+  position: fixed;
+  width: 100%;
+  min-height: 100%;
+  background: rgba(0, 0, 0, 0.67);
+  text-align: center;
+}
+.attachviewer.active {
+  display: -ms-flexbox;
+  display: flex;
+}
+.attachviewer .attachviewer-item {
+  display: none;
+  -ms-flex-align: center;
+      -ms-grid-row-align: center;
+      align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+}
+.attachviewer .attachviewer-item.active {
+  display: -ms-flexbox;
+  display: flex;
+}
+.attachviewer .attachviewer-item iframe,
+.attachviewer .attachviewer-item img {
+  margin: auto auto;
+  height: 80%;
+  -ms-flex-item-align: center;
+      align-self: center;
+  z-index: 9999;
+}
+.attachviewer .attachviewer-toolbar {
+  color: #fff;
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px;
+  line-height: 24px;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.67);
+}
+.attachviewer .attachviewer-toolbar .attachviewer-subtoolbar {
+  float: right;
+  margin-right: 8px;
+  color: #fff;
+}
+.attachviewer .attachviewer-toolbar .attachviewer-subtoolbar a {
+  color: #fff;
+}
+.attachviewer .attachviewer-toolbar .attachviewer-close {
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: block;
+  height: 24px;
+  width: 24px;
+  line-height: 24px;
+  text-align: center;
+  float: right;
+  font-size: 24px;
+  margin-right: 32px;
+  border-radius: 24px;
+  color: #fff;
+}
+.attachviewer .attachviewer-prev,
+.attachviewer .attachviewer-next {
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: block;
+  color: #fff;
+  padding: 12px;
+  font-size: 30px;
+  position: fixed;
+  top: 48%;
+  opacity: .5;
+}
+.attachviewer .attachviewer-prev:hover,
+.attachviewer .attachviewer-next:hover {
+  opacity: 1;
+}
+.attachviewer .attachviewer-prev {
+  left: 0;
+}
+.attachviewer .attachviewer-next {
+  right: 0;
+}
