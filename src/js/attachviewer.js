@@ -69,7 +69,7 @@ class AttachViewer {
 				crEl('div',{c:'attachviewer-toolbar'},
 				crEl('button',{c:'attachviewer-close', e:{click:function(){th.close()}}},'×'),
 				crEl('div', {c:'attachviewer-subtoolbar'}, crEl('a',{target:'_blank', href:item.href, e:{click:()=>{th.close()}}},'⇓')),
-				item.innerHTML)
+				item.dataset.name || item.innerHTML)
 			)
 		}
 		
