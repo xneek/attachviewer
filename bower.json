@@ -1,0 +1,36 @@
+{
+  "name": "attachviewer",
+  "description": "view attach",
+  "main": [
+    "dist/attachviewer.js",
+    "dist/attachviewer.css"
+  ],
+  "authors": [
+    "Nikolay Fedoseev <info@fednik.ru>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "attachviewer",
+    "view",
+	"lightbox",
+	"fancybox"
+  ],
+  "homepage": "https://github.com/xneek/attachviewer",
+  "moduleType": [
+    "globals"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "src",
+	"bower_components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xneek/attachviewer.git"
+  },
+  "dependencies": {
+    "crEl": "https://github.com/xneek/crEl.git"
+  }
+}
