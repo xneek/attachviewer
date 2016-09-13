@@ -108,6 +108,6 @@ class AttachViewer {
 			}
 		})
 		this.container.focus()
-		return elements;
+		return this;
 	}
 }
