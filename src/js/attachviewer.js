@@ -54,7 +54,7 @@ class AttachViewer {
 							crEl('a',{href:url, target:'_blank', e:{click:()=>th.close()}},th.opts.unknownCaption)
 						)
 						
-						xx.onclick = function(event){ event.preventDefault(); return false;}
+					
 					}
 					
 				}
@@ -125,8 +125,7 @@ class AttachViewer {
 		if(elements && elements.length){
 		
 		this.toolbar = crEl('div', {c:'attachviewer-subtoolbar'});
-		this.toolbar.onclick = function(event){ event.preventDefault(); return false;}
-		
+
 			this.title = crEl('span', {c:'attachviewer-title'});
 			
 			this.downloadBtn = crEl('a',{},th.opts.download);

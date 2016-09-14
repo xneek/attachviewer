@@ -63,10 +63,6 @@ var AttachViewer = function () {
 							xx = crEl('div', { c: 'attachviewer-unknown' }, crEl('h3', th.opts.unknownTitle), crEl('a', { href: url, target: '_blank', e: { click: function click() {
 										return th.close();
 									} } }, th.opts.unknownCaption));
-
-							xx.onclick = function (event) {
-								event.preventDefault();return false;
-							};
 						}
 					}
 
@@ -161,9 +157,6 @@ var AttachViewer = function () {
 				};
 
 				_this.toolbar = crEl('div', { c: 'attachviewer-subtoolbar' });
-				_this.toolbar.onclick = function (event) {
-					event.preventDefault();return false;
-				};
 
 				_this.title = crEl('span', { c: 'attachviewer-title' });
 
