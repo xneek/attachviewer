@@ -60,7 +60,9 @@ var AttachViewer = function () {
 							if (th.opts.unknownPreview == false) {
 								location.href = url;return false;
 							}
-							xx = crEl('div', { c: 'attachviewer-unknown' }, crEl('h3', th.opts.unknownTitle), crEl('a', { href: url, target: '_blank' }, th.opts.unknownCaption));
+							xx = crEl('div', { c: 'attachviewer-unknown' }, crEl('h3', th.opts.unknownTitle), crEl('a', { href: url, target: '_blank', e: { click: function click() {
+										return th.close();
+									} } }, th.opts.unknownCaption));
 						}
 					}
 

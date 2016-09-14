@@ -51,7 +51,7 @@ class AttachViewer {
 						if(th.opts.unknownPreview==false){ location.href = url; return false;}
 						xx = crEl('div', {c:'attachviewer-unknown'},
 							crEl('h3',th.opts.unknownTitle),
-							crEl('a',{href:url, target:'_blank'},th.opts.unknownCaption)
+							crEl('a',{href:url, target:'_blank', e:{click:()=>th.close()}},th.opts.unknownCaption)
 						)
 						
 						
