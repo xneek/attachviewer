@@ -75,13 +75,12 @@ var AttachViewer = function () {
 					th.downloadBtn.classList.add('visible');
 					th.downloadBtn.target = el.dataset.target || '_blank';
 					th.downloadBtn.href = el.dataset.downloadUrl;
-					th.downloadBtn.onclick = null;
-					th.downloadBtn.addEventListener('click', function () {
+					th.downloadBtn.onclick = function () {
 						window.open(el.dataset.downloadUrl, '_blank');
 						if (th.opts.closeOnDownload) {
 							th.close();
 						}
-					}, false);
+					};
 				} else {
 					th.downloadBtn.classList.remove('visible');
 				}
@@ -89,11 +88,10 @@ var AttachViewer = function () {
 					th.showBtn.classList.add('visible');
 					th.showBtn.target = el.dataset.target || '_blank';
 					th.showBtn.href = el.dataset.showUrl;
-					th.showBtn.onclick = null;
-					th.showBtn.addEventListener('click', function () {
+					th.showBtn.onclick = function () {
 						window.open(el.dataset.showUrl, '_blank');
 						if (th.opts.closeOnShow) th.close();
-					}, false);
+					};
 				} else {
 					th.showBtn.classList.remove('visible');
 				}
@@ -191,7 +189,6 @@ var AttachViewer = function () {
 							th.close();
 						}
 					}
-					return false;
 				};
 
 				_this.container.appendChild(crEl('div', { c: 'attachviewer-toolbar' }, crEl('button', { c: 'attachviewer-close', e: { click: function click() {

@@ -68,20 +68,18 @@ class AttachViewer {
 				th.downloadBtn.classList.add('visible');
 				th.downloadBtn.target = el.dataset.target || '_blank'
 				th.downloadBtn.href =el.dataset.downloadUrl;
-				th.downloadBtn.onclick = null;
-			th.downloadBtn.addEventListener('click',()=>{
+				th.downloadBtn.onclick = ()=>{
 				window.open(el.dataset.downloadUrl,'_blank')
-				if(th.opts.closeOnDownload){th.close()}}, false)
+				if(th.opts.closeOnDownload){th.close()}}
 
 			} else {th.downloadBtn.classList.remove('visible')}
 			if(el.dataset.showUrl && el.dataset.showUrl.length){
 				th.showBtn.classList.add('visible')
 				th.showBtn.target = el.dataset.target || '_blank';
 				th.showBtn.href = el.dataset.showUrl;
-				th.showBtn.onclick = null;
-				th.showBtn.addEventListener('click', ()=>{
+				th.showBtn.onclick =  ()=>{
 					window.open(el.dataset.showUrl,'_blank')
-					if(th.opts.closeOnShow)th.close()},false);
+					if(th.opts.closeOnShow)th.close()}
 			} else {th.showBtn.classList.remove('visible')}
 			
 			
@@ -171,7 +169,7 @@ class AttachViewer {
 						th.close();
 					}
 				}
-				return false;}
+			}
 			
 			this.container.appendChild(crEl('div',{c:'attachviewer-toolbar'},
 					crEl('button',{c:'attachviewer-close', e:{click:function(){th.close()}}},th.opts.close),
