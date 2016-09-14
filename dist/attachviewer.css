@@ -1,9 +1,5 @@
-/*attachviewer*/
 .attachviewer {
   display: none;
-  -ms-flex-align: center;
-      -ms-grid-row-align: center;
-      align-items: center;
   -ms-flex-pack: center;
       justify-content: center;
   top: 0;
@@ -58,6 +54,14 @@
 }
 .attachviewer .attachviewer-toolbar .attachviewer-subtoolbar a {
   color: #fff;
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+  line-height: 24px;
+  text-align: center;
+  margin-right: 8px!important;
+  text-decoration: none;
+  box-sizing: border-box;
 }
 .attachviewer .attachviewer-toolbar .attachviewer-close {
   background: transparent;
@@ -98,4 +102,17 @@
 }
 .attachviewer .attachviewer-next {
   right: 0;
+}
+.attachviewer .attachviewer-unknown {
+  background: rgba(0, 0, 0, 0.67);
+  padding: 20px;
+  width: 400px;
+  color: #fff;
+}
+.attachviewer .attachviewer-unknown a {
+  display: inline-block;
+  padding: 8px 16px;
+  background: blue;
+  color: #fff;
+  margin-bottom: 8px;
 }

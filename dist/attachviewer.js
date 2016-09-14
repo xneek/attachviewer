@@ -14,7 +14,7 @@ var AttachViewer = function () {
 	}, {
 		key: 'open',
 		value: function open(i) {
-			console.log(i);
+			var th = this;
 			this.container.classList.add('active');
 			if (this.container.querySelector('.active')) {
 				this.container.querySelector('.active').classList.remove('active');
@@ -23,14 +23,16 @@ var AttachViewer = function () {
 			if (el) {
 				el.classList.add('active');
 				if (!el.dataset.loaded) {
+
 					var OFFICE = ['PPT', 'PPTX', 'DOC', 'DOCX', 'XLS', 'XLSX'];
 					var GOOGLE = ['WebM', 'MPEG4', '3GPP', 'MOV', 'AVI', 'MPEGPS', 'WMV', 'FLV', 'TXT', 'CSS', 'HTML', 'PHP', 'C', 'CPP', 'H', 'HPP', 'JS', 'DOC', 'DOCX', 'XLS', 'XLSX', 'PPT', 'PPTX', 'PDF', 'PAGES', 'AI', 'PSD', 'TIFF', 'DXF', 'EPS', 'PS', 'TTF', 'XPS', 'ZIP', 'RAR'];
 					var IMAGES = ['JPEG', 'JPG', 'PNG', 'GIF', 'TIFF', 'BMP', 'SVG'];
 					var re = /(?:\.([^.]+))?$/;
 					var ext = re.exec(el.dataset.url)[1]; // extention
 					var xx = crEl('span', 'X3_' + ext);
-					var maxHeight = window.innerHeight - 96 + "px";
+
 					var maxWidth = window.innerWidth - 96 + "px";
+					var maxHeight = window.innerHeight - 96 + "px";
 
 					if (ext) {
 						if (IMAGES.indexOf(ext.toUpperCase()) >= 0) {
@@ -42,10 +44,24 @@ var AttachViewer = function () {
 							xx.style.height = maxHeight;
 							xx.style.width = maxWidth;
 						} else if (GOOGLE.indexOf(ext.toUpperCase()) >= 0) {
-							xx = crEl('iframe', { src: 'https://docs.google.com/a/' + this.domain + '/viewer?url=' + el.dataset.url + '&embedded=false' });
-						} else {}
-
-						//
+							xx = crEl('iframe', { src: '//docs.google.com/a/' + th.opts.domain + '/viewer?url=' + el.dataset.url + '&embedded=true' });
+							xx.style.height = maxHeight;
+							xx.style.width = maxWidth;
+						} else {
+							var url = '#';
+							if (el.dataset.downloadUrl && el.dataset.downloadUrl.length) {
+								url = el.dataset.downloadUrl;
+							} else if (el.dataset.url && el.dataset.url.length) {
+								url = el.dataset.url;
+							} else {
+								url = url.href;
+							}
+							console.log(url, el);
+							if (th.opts.unknownPreview == false) {
+								location.href = url;return false;
+							}
+							xx = crEl('div', { c: 'attachviewer-unknown' }, crEl('h3', th.opts.unknownTitle), crEl('a', { href: url, target: '_blank' }, th.opts.unknownCaption));
+						}
 					}
 
 					el.appendChild(xx);
@@ -80,16 +96,47 @@ var AttachViewer = function () {
 	function AttachViewer(elements) {
 		var _this = this;
 
+		var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
 		_classCallCheck(this, AttachViewer);
 
+		this.opts = Object.assign({
+			name: 'attachviewer',
+			domain: 'localhost',
+			showPrevNext: true,
+			prev: '〈',
+			next: '〉',
+			close: '╳',
+			download: '⇓', show: '⤢',
+			closeOnShow: true,
+			closeOnDownload: true,
+			unknownPreview: true,
+			unknownCaption: 'Скачать файл',
+			unknownTitle: 'Предварительный просмотр недоступен'
+
+		}, opts);
 		var th = this;
-		this.domain = 'my-pm.ru';
+
 		function Item(item, index) {
+			var toolbar = crEl('div', { c: 'attachviewer-subtoolbar' });
+			if (item.dataset) {
+				if (item.dataset.downloadUrl && item.dataset.downloadUrl.length) {
+					toolbar.appendChild(crEl('a', { target: item.dataset.target || '_blank', href: item.dataset.downloadUrl, e: { click: function click() {
+								if (th.opts.closeOnDownload) {
+									th.close();
+								}
+							} } }, th.opts.download));
+				}
+
+				if (item.dataset.showUrl && item.dataset.showUrl.length) {
+					toolbar.appendChild(crEl('a', { target: item.dataset.target || '_blank', href: item.dataset.showUrl, e: { click: function click() {
+								if (th.opts.closeOnShow) th.close();
+							} } }, th.opts.show));
+				}
+			}
 			return crEl('div', { c: 'attachviewer-item', d: { url: item.href } }, crEl('div', { c: 'attachviewer-toolbar' }, crEl('button', { c: 'attachviewer-close', e: { click: function click() {
 						th.close();
-					} } }, '×'), crEl('div', { c: 'attachviewer-subtoolbar' }, crEl('a', { target: '_blank', href: item.href, e: { click: function click() {
-						th.close();
-					} } }, '⇓')), item.dataset.name || item.innerHTML));
+					} } }, th.opts.close), toolbar, item.dataset.name || item.innerHTML));
 		}
 
 		this.container = crEl('div', { c: 'attachviewer' });
@@ -104,13 +151,13 @@ var AttachViewer = function () {
 
 				_this.container.appendChild(new Item(k, i));
 			});
-			if (elements.length > 1) {
+			if (this.opts.showPrevNext && elements.length > 1) {
 				this.container.appendChild(crEl('button', { c: 'attachviewer-prev', e: { click: function click() {
 							th.prev();
-						} } }, '〈'));
+						} } }, this.opts.prev));
 				this.container.appendChild(crEl('button', { c: 'attachviewer-next', e: { click: function click() {
 							th.next();
-						} } }, '〉'));
+						} } }, this.opts.next));
 			}
 		}
 
