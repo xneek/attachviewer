@@ -63,11 +63,39 @@ var AttachViewer = function () {
 							xx = crEl('div', { c: 'attachviewer-unknown' }, crEl('h3', th.opts.unknownTitle), crEl('a', { href: url, target: '_blank', e: { click: function click() {
 										return th.close();
 									} } }, th.opts.unknownCaption));
+
+							xx.onclick = function (event) {
+								event.preventDefault();return false;
+							};
 						}
 					}
 
 					el.appendChild(xx);
 					el.dataset.loaded = true;
+				}
+				th.title.innerHTML = el.dataset.name;
+				//console.log(el.dataset)
+				if (el.dataset.downloadUrl && el.dataset.downloadUrl.length) {
+					th.downloadBtn.classList.add('visible');
+					th.downloadBtn.onclick = function () {
+						if (th.opts.closeOnDownload) {
+							th.close();
+						}
+					};
+					th.downloadBtn.target = el.dataset.target || '_blank';
+					th.downloadBtn.href = el.dataset.downloadUrl;
+				} else {
+					th.downloadBtn.classList.remove('visible');
+				}
+				if (el.dataset.showUrl && el.dataset.showUrl.length) {
+					th.showBtn.classList.add('visible');
+					th.showBtn.onclick = function () {
+						if (th.opts.closeOnShow) th.close();
+					};
+					th.showBtn.target = el.dataset.target || '_blank';
+					th.showBtn.href = el.dataset.showUrl;
+				} else {
+					th.showBtn.classList.remove('visible');
 				}
 			}
 			//this.container.appendChild(new Item(item));
@@ -102,6 +130,7 @@ var AttachViewer = function () {
 
 		_classCallCheck(this, AttachViewer);
 
+		var th = this;
 		this.opts = Object.assign({
 			name: 'attachviewer',
 			domain: 'localhost',
@@ -109,58 +138,69 @@ var AttachViewer = function () {
 			prev: '〈',
 			next: '〉',
 			close: '╳',
-			download: '⇓', show: '⤢',
+			download: '⇓',
+			show: '⤢',
 			closeOnShow: true,
 			closeOnDownload: true,
 			unknownPreview: true,
 			unknownCaption: 'Скачать файл',
-			unknownTitle: 'Предварительный просмотр недоступен'
+			unknownTitle: 'Предварительный просмотр недоступен',
+			closable: false
 
 		}, opts);
-		var th = this;
-
-		function Item(item, index) {
-			var toolbar = crEl('div', { c: 'attachviewer-subtoolbar' });
-			if (item.dataset) {
-				if (item.dataset.downloadUrl && item.dataset.downloadUrl.length) {
-					toolbar.appendChild(crEl('a', { target: item.dataset.target || '_blank', href: item.dataset.downloadUrl, e: { click: function click() {
-								if (th.opts.closeOnDownload) {
-									th.close();
-								}
-							} } }, th.opts.download));
-				}
-
-				if (item.dataset.showUrl && item.dataset.showUrl.length) {
-					toolbar.appendChild(crEl('a', { target: item.dataset.target || '_blank', href: item.dataset.showUrl, e: { click: function click() {
-								if (th.opts.closeOnShow) th.close();
-							} } }, th.opts.show));
-				}
-			}
-			return crEl('div', { c: 'attachviewer-item', d: { url: item.href } }, crEl('div', { c: 'attachviewer-toolbar' }, crEl('button', { c: 'attachviewer-close', e: { click: function click() {
-						th.close();
-					} } }, th.opts.close), toolbar, item.dataset.name || item.innerHTML));
-		}
 
 		this.container = crEl('div', { c: 'attachviewer' });
 		if (elements && elements.length) {
-			this.container.dataset.length = elements.length;
-			elements.forEach(function (k, i) {
-				k.addEventListener('click', function (event) {
-					event.preventDefault();
-					th.open(i);
-					return false;
-				});
+			(function () {
+				var Item = function Item(item, index) {
+					return crEl('div', { c: 'attachviewer-item', d: { name: item.dataset.name || item.innerHTML, url: item.href, showUrl: item.dataset.showUrl || '', downloadUrl: item.dataset.downloadUrl || '' } });
+				};
 
-				_this.container.appendChild(new Item(k, i));
-			});
-			if (this.opts.showPrevNext && elements.length > 1) {
-				this.container.appendChild(crEl('button', { c: 'attachviewer-prev', e: { click: function click() {
-							th.prev();
-						} } }, this.opts.prev));
-				this.container.appendChild(crEl('button', { c: 'attachviewer-next', e: { click: function click() {
-							th.next();
-						} } }, this.opts.next));
-			}
+				_this.toolbar = crEl('div', { c: 'attachviewer-subtoolbar' });
+				_this.toolbar.onclick = function (event) {
+					event.preventDefault();return false;
+				};
+
+				_this.title = crEl('span', { c: 'attachviewer-title' });
+
+				_this.downloadBtn = crEl('a', {}, th.opts.download);
+				_this.showBtn = crEl('a', {}, th.opts.show);
+
+				_this.container.dataset.length = elements.length;
+				elements.forEach(function (k, i) {
+					k.addEventListener('click', function (event) {
+						event.preventDefault();
+						th.open(i);
+						return false;
+					});
+
+					_this.container.appendChild(new Item(k, i));
+				});
+				if (_this.opts.showPrevNext && elements.length > 1) {
+					_this.container.appendChild(crEl('button', { c: 'attachviewer-prev', e: { click: function click(event) {
+								event.preventDefault();th.prev();return false;
+							} } }, _this.opts.prev));
+					_this.container.appendChild(crEl('button', { c: 'attachviewer-next', e: { click: function click(event) {
+								event.preventDefault();th.next();return false;
+							} } }, _this.opts.next));
+				}
+
+				_this.toolbar.appendChild(_this.downloadBtn);
+				_this.toolbar.appendChild(_this.showBtn);
+
+				_this.container.onclick = function (event) {
+					if (event.target === this) {
+						if (th.opts.closable) {
+							th.close();
+						}
+					}
+					return false;
+				};
+
+				_this.container.appendChild(crEl('div', { c: 'attachviewer-toolbar' }, crEl('button', { c: 'attachviewer-close', e: { click: function click() {
+							th.close();
+						} } }, th.opts.close), th.toolbar, th.title));
+			})();
 		}
 
 		document.body.appendChild(this.container);

@@ -54,7 +54,7 @@ class AttachViewer {
 							crEl('a',{href:url, target:'_blank', e:{click:()=>th.close()}},th.opts.unknownCaption)
 						)
 						
-						
+						xx.onclick = function(event){ event.preventDefault(); return false;}
 					}
 					
 				}
@@ -62,6 +62,22 @@ class AttachViewer {
 				el.appendChild(xx)
 				el.dataset.loaded = true;
 			}
+			th.title.innerHTML = el.dataset.name
+			//console.log(el.dataset)
+			if(el.dataset.downloadUrl && el.dataset.downloadUrl.length){
+				th.downloadBtn.classList.add('visible')
+				th.downloadBtn.onclick = ()=>{if(th.opts.closeOnDownload){th.close()}}
+				th.downloadBtn.target = el.dataset.target || '_blank'
+				th.downloadBtn.href =el.dataset.downloadUrl;
+			} else {th.downloadBtn.classList.remove('visible')}
+			if(el.dataset.showUrl && el.dataset.showUrl.length){
+				th.showBtn.classList.add('visible')
+				th.showBtn.onclick = ()=>{if(th.opts.closeOnShow)th.close()}
+				th.showBtn.target = el.dataset.target || '_blank';
+				th.showBtn.href = el.dataset.showUrl;
+			} else {th.showBtn.classList.remove('visible')}
+			
+			
 		}
 		//this.container.appendChild(new Item(item));
 		this.container.dataset.index = i;
@@ -81,6 +97,8 @@ class AttachViewer {
 	}
 	
 	constructor (elements, opts={}) {
+	
+			let th = this;
 		this.opts = Object.assign({
 			name:'attachviewer',
 			domain:'localhost',
@@ -88,53 +106,74 @@ class AttachViewer {
 			prev:'〈',
 			next:'〉', 
 			close: '╳',
-			download:'⇓',show:'⤢',
+			download:'⇓',
+			show:'⤢',
 			closeOnShow:true,
 			closeOnDownload:true,
 			unknownPreview: true,
 			unknownCaption:'Скачать файл',
-			unknownTitle:'Предварительный просмотр недоступен'
+			unknownTitle:'Предварительный просмотр недоступен',
+			closable:false
 			
 		},opts);
-		let th = this;
-	
-		function Item (item, index){
-			let toolbar = crEl('div', {c:'attachviewer-subtoolbar'});
-			if(item.dataset){
-				if(item.dataset.downloadUrl && item.dataset.downloadUrl.length){
-					toolbar.appendChild(crEl('a',{target: item.dataset.target || '_blank', href:item.dataset.downloadUrl, e:{click:()=>{if(th.opts.closeOnDownload){th.close()}}}},th.opts.download))
-				}
-	
-				if(item.dataset.showUrl && item.dataset.showUrl.length){
-					toolbar.appendChild(crEl('a',{target: item.dataset.target || '_blank', href:item.dataset.showUrl, e:{click:()=>{if(th.opts.closeOnShow)th.close()}}},th.opts.show))
-				}
-				
-			}
-			return crEl('div',{c:'attachviewer-item', d:{url:item.href}}, 
-				crEl('div',{c:'attachviewer-toolbar'},
-				crEl('button',{c:'attachviewer-close', e:{click:function(){th.close()}}},th.opts.close),
-					toolbar,
-				item.dataset.name || item.innerHTML)
-			)
-		}
 		
-		this.container = crEl('div', {c:'attachviewer'})
+	
+
+		
+		this.container = crEl('div', {c:'attachviewer'});
 		if(elements && elements.length){
-		this.container.dataset.length = elements.length
-			elements.forEach((k,i)=>{
-				k.addEventListener('click', event=>{
-					event.preventDefault();
-					th.open(i);
-					return false;
+		
+		this.toolbar = crEl('div', {c:'attachviewer-subtoolbar'});
+		this.toolbar.onclick = function(event){ event.preventDefault(); return false;}
+		
+			this.title = crEl('span', {c:'attachviewer-title'});
+			
+			this.downloadBtn = crEl('a',{},th.opts.download);
+			this.showBtn = crEl('a',{},th.opts.show);		
+		
+			function Item (item, index){
+				return crEl('div',{c:'attachviewer-item', d:{name:item.dataset.name || item.innerHTML, url:item.href, showUrl: item.dataset.showUrl || '', downloadUrl:item.dataset.downloadUrl || ''}});
+				
+
+				
+				
+			}		
+			this.container.dataset.length = elements.length
+				elements.forEach((k,i)=>{
+					k.addEventListener('click', event=>{
+						event.preventDefault();
+						th.open(i);
+						return false;
+					})
+					
+					this.container.appendChild( new Item(k,i) )
+					
 				})
-				
-				this.container.appendChild( new Item(k,i) )
-				
-			})
 			if( this.opts.showPrevNext && elements.length>1 ){
-				this.container.appendChild(crEl('button',{c:'attachviewer-prev',e:{click:function(){th.prev()}}},this.opts.prev));
-				this.container.appendChild(crEl('button',{c:'attachviewer-next',e:{click:function(){th.next()}}},this.opts.next));
+				this.container.appendChild(crEl('button',{c:'attachviewer-prev',e:{click:function(event){event.preventDefault(); th.prev(); return false;}}},this.opts.prev));
+				this.container.appendChild(crEl('button',{c:'attachviewer-next',e:{click:function(event){event.preventDefault(); th.next(); return false;}}},this.opts.next));
 			}
+			
+	
+			
+			this.toolbar.appendChild(this.downloadBtn)
+			this.toolbar.appendChild(this.showBtn)
+
+			this.container.onclick = function(event){ 
+				if(event.target === this){
+					if(th.opts.closable){
+						th.close();
+					}
+				}
+				return false;}
+			
+			this.container.appendChild(crEl('div',{c:'attachviewer-toolbar'},
+					crEl('button',{c:'attachviewer-close', e:{click:function(){th.close()}}},th.opts.close),
+					th.toolbar,
+					th.title
+				))
+							
+			
 		}
 		
 		document.body.appendChild(this.container);
