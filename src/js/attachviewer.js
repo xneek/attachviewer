@@ -68,14 +68,20 @@ class AttachViewer {
 				th.downloadBtn.classList.add('visible');
 				th.downloadBtn.target = el.dataset.target || '_blank'
 				th.downloadBtn.href =el.dataset.downloadUrl;
-			th.downloadBtn.addEventListener('click',()=>{if(th.opts.closeOnDownload){th.close()}}, false)
+				th.downloadBtn.onclick = null;
+			th.downloadBtn.addEventListener('click',()=>{
+				window.open(el.dataset.downloadUrl,'_blank')
+				if(th.opts.closeOnDownload){th.close()}}, false)
 
 			} else {th.downloadBtn.classList.remove('visible')}
 			if(el.dataset.showUrl && el.dataset.showUrl.length){
 				th.showBtn.classList.add('visible')
 				th.showBtn.target = el.dataset.target || '_blank';
 				th.showBtn.href = el.dataset.showUrl;
-			th.showBtn.addEventListener('click', ()=>{if(th.opts.closeOnShow)th.close()},false);
+				th.showBtn.onclick = null;
+				th.showBtn.addEventListener('click', ()=>{
+					window.open(el.dataset.showUrl,'_blank')
+					if(th.opts.closeOnShow)th.close()},false);
 			} else {th.showBtn.classList.remove('visible')}
 			
 			
