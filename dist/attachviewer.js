@@ -75,13 +75,13 @@ var AttachViewer = function () {
 					th.downloadBtn.classList.add('visible');
 					th.downloadBtn.target = el.dataset.target || '_blank';
 					th.downloadBtn.href = el.dataset.downloadUrl;
-					th.downloadBtn.onclick = function () {
+					th.downloadBtn.addEventListener('click', function () {
 						setTimeout(function () {
 							if (th.opts.closeOnDownload) {
 								th.close();
 							}
 						}, 500);
-					};
+					});
 				} else {
 					th.downloadBtn.classList.remove('visible');
 				}
@@ -89,11 +89,11 @@ var AttachViewer = function () {
 					th.showBtn.classList.add('visible');
 					th.showBtn.target = el.dataset.target || '_blank';
 					th.showBtn.href = el.dataset.showUrl;
-					th.showBtn.onclick = function () {
+					th.showBtn.addEventListener('click', function () {
 						setTimeout(function () {
 							if (th.opts.closeOnShow) th.close();
 						}, 500);
-					};
+					});
 				} else {
 					th.showBtn.classList.remove('visible');
 				}

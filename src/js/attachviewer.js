@@ -68,14 +68,14 @@ class AttachViewer {
 				th.downloadBtn.classList.add('visible');
 				th.downloadBtn.target = el.dataset.target || '_blank'
 				th.downloadBtn.href =el.dataset.downloadUrl;
-				th.downloadBtn.onclick = ()=>{setTimeout(()=>{if(th.opts.closeOnDownload){th.close()}},500)}
+				th.downloadBtn.addEventListener('click',()=>{setTimeout(()=>{if(th.opts.closeOnDownload){th.close()}},500)})
 
 			} else {th.downloadBtn.classList.remove('visible')}
 			if(el.dataset.showUrl && el.dataset.showUrl.length){
 				th.showBtn.classList.add('visible')
 				th.showBtn.target = el.dataset.target || '_blank';
 				th.showBtn.href = el.dataset.showUrl;
-			th.showBtn.onclick = ()=>{setTimeout(()=>{if(th.opts.closeOnShow)th.close()},500)}
+			th.showBtn.addEventListener('click', ()=>{setTimeout(()=>{if(th.opts.closeOnShow)th.close()},500)});
 			} else {th.showBtn.classList.remove('visible')}
 			
 			
