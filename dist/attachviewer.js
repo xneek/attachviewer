@@ -77,23 +77,27 @@ var AttachViewer = function () {
 				//console.log(el.dataset)
 				if (el.dataset.downloadUrl && el.dataset.downloadUrl.length) {
 					th.downloadBtn.classList.add('visible');
-					th.downloadBtn.onclick = function () {
-						if (th.opts.closeOnDownload) {
-							th.close();
-						}
-					};
 					th.downloadBtn.target = el.dataset.target || '_blank';
 					th.downloadBtn.href = el.dataset.downloadUrl;
+					th.downloadBtn.onclick = function () {
+						setTimeout(function () {
+							if (th.opts.closeOnDownload) {
+								th.close();
+							}
+						}, 500);
+					};
 				} else {
 					th.downloadBtn.classList.remove('visible');
 				}
 				if (el.dataset.showUrl && el.dataset.showUrl.length) {
 					th.showBtn.classList.add('visible');
-					th.showBtn.onclick = function () {
-						if (th.opts.closeOnShow) th.close();
-					};
 					th.showBtn.target = el.dataset.target || '_blank';
 					th.showBtn.href = el.dataset.showUrl;
+					th.showBtn.onclick = function () {
+						setTimeout(function () {
+							if (th.opts.closeOnShow) th.close();
+						}, 500);
+					};
 				} else {
 					th.showBtn.classList.remove('visible');
 				}
