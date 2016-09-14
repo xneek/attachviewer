@@ -76,12 +76,10 @@ var AttachViewer = function () {
 					th.downloadBtn.target = el.dataset.target || '_blank';
 					th.downloadBtn.href = el.dataset.downloadUrl;
 					th.downloadBtn.addEventListener('click', function () {
-						setTimeout(function () {
-							if (th.opts.closeOnDownload) {
-								th.close();
-							}
-						}, 500);
-					});
+						if (th.opts.closeOnDownload) {
+							th.close();
+						}
+					}, false);
 				} else {
 					th.downloadBtn.classList.remove('visible');
 				}
@@ -90,10 +88,8 @@ var AttachViewer = function () {
 					th.showBtn.target = el.dataset.target || '_blank';
 					th.showBtn.href = el.dataset.showUrl;
 					th.showBtn.addEventListener('click', function () {
-						setTimeout(function () {
-							if (th.opts.closeOnShow) th.close();
-						}, 500);
-					});
+						if (th.opts.closeOnShow) th.close();
+					}, false);
 				} else {
 					th.showBtn.classList.remove('visible');
 				}
