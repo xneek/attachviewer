@@ -30,7 +30,8 @@
 .attachviewer .attachviewer-item iframe,
 .attachviewer .attachviewer-item img {
   margin: auto auto;
-  height: 80%;
+  height: auto;
+  max-height: 80%;
   -ms-flex-item-align: center;
       align-self: center;
   z-index: 9999;
