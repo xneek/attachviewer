@@ -182,6 +182,8 @@ class AttachViewer {
 		
 		document.body.appendChild(this.container);
 		window.addEventListener('keydown',function(event){
+			event.preventDefault();
+			event.stopPropagation();
 			if(th.container.classList.contains('active')){
 			if(event.keyCode===27){ //escape
 				th.close()
@@ -192,8 +194,8 @@ class AttachViewer {
 			if(event.keyCode===39){ //->
 				th.next()
 			}
-			//console.log(event.keyCode)
 			}
+			return false;
 		})
 		this.container.focus()
 		return this;

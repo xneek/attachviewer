@@ -124,7 +124,7 @@ var AttachViewer = function () {
 	function AttachViewer(elements) {
 		var _this = this;
 
-		var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+		var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 		_classCallCheck(this, AttachViewer);
 
@@ -149,56 +149,56 @@ var AttachViewer = function () {
 
 		this.container = crEl('div', { c: 'attachviewer' });
 		if (elements && elements.length) {
-			(function () {
-				var Item = function Item(item, index) {
-					return crEl('div', { c: 'attachviewer-item', d: { name: item.dataset.name || item.innerHTML, url: item.href, showUrl: item.dataset.showUrl || '', downloadUrl: item.dataset.downloadUrl || '' } });
-				};
+			var Item = function Item(item, index) {
+				return crEl('div', { c: 'attachviewer-item', d: { name: item.dataset.name || item.innerHTML, url: item.href, showUrl: item.dataset.showUrl || '', downloadUrl: item.dataset.downloadUrl || '' } });
+			};
 
-				_this.toolbar = crEl('div', { c: 'attachviewer-subtoolbar' });
+			this.toolbar = crEl('div', { c: 'attachviewer-subtoolbar' });
 
-				_this.title = crEl('span', { c: 'attachviewer-title' });
+			this.title = crEl('span', { c: 'attachviewer-title' });
 
-				_this.downloadBtn = crEl('a', {}, th.opts.download);
-				_this.showBtn = crEl('a', {}, th.opts.show);
+			this.downloadBtn = crEl('a', {}, th.opts.download);
+			this.showBtn = crEl('a', {}, th.opts.show);
 
-				_this.container.dataset.length = elements.length;
-				elements.forEach(function (k, i) {
-					k.addEventListener('click', function (event) {
-						event.preventDefault();
-						th.open(i);
-						return false;
-					});
-
-					_this.container.appendChild(new Item(k, i));
+			this.container.dataset.length = elements.length;
+			elements.forEach(function (k, i) {
+				k.addEventListener('click', function (event) {
+					event.preventDefault();
+					th.open(i);
+					return false;
 				});
-				if (_this.opts.showPrevNext && elements.length > 1) {
-					_this.container.appendChild(crEl('button', { c: 'attachviewer-prev', e: { click: function click(event) {
-								event.preventDefault();th.prev();return false;
-							} } }, _this.opts.prev));
-					_this.container.appendChild(crEl('button', { c: 'attachviewer-next', e: { click: function click(event) {
-								event.preventDefault();th.next();return false;
-							} } }, _this.opts.next));
-				}
 
-				_this.toolbar.appendChild(_this.downloadBtn);
-				_this.toolbar.appendChild(_this.showBtn);
+				_this.container.appendChild(new Item(k, i));
+			});
+			if (this.opts.showPrevNext && elements.length > 1) {
+				this.container.appendChild(crEl('button', { c: 'attachviewer-prev', e: { click: function click(event) {
+							event.preventDefault();th.prev();return false;
+						} } }, this.opts.prev));
+				this.container.appendChild(crEl('button', { c: 'attachviewer-next', e: { click: function click(event) {
+							event.preventDefault();th.next();return false;
+						} } }, this.opts.next));
+			}
 
-				_this.container.onclick = function (event) {
-					if (event.target === this) {
-						if (th.opts.closable) {
-							th.close();
-						}
+			this.toolbar.appendChild(this.downloadBtn);
+			this.toolbar.appendChild(this.showBtn);
+
+			this.container.onclick = function (event) {
+				if (event.target === this) {
+					if (th.opts.closable) {
+						th.close();
 					}
-				};
+				}
+			};
 
-				_this.container.appendChild(crEl('div', { c: 'attachviewer-toolbar' }, crEl('button', { c: 'attachviewer-close', e: { click: function click() {
-							th.close();
-						} } }, th.opts.close), th.toolbar, th.title));
-			})();
+			this.container.appendChild(crEl('div', { c: 'attachviewer-toolbar' }, crEl('button', { c: 'attachviewer-close', e: { click: function click() {
+						th.close();
+					} } }, th.opts.close), th.toolbar, th.title));
 		}
 
 		document.body.appendChild(this.container);
 		window.addEventListener('keydown', function (event) {
+			event.preventDefault();
+			event.stopPropagation();
 			if (th.container.classList.contains('active')) {
 				if (event.keyCode === 27) {
 					//escape
@@ -212,8 +212,8 @@ var AttachViewer = function () {
 					//->
 					th.next();
 				}
-				//console.log(event.keyCode)
 			}
+			return false;
 		});
 		this.container.focus();
 		return this;
